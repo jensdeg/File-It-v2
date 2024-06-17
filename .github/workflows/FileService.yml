@@ -80,41 +80,41 @@ jobs:
           dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
 
 
-  deploy:
-      runs-on: ubuntu-latest
-      needs: build-and-test   
+  # deploy:
+  #     runs-on: ubuntu-latest
+  #     needs: build-and-test   
   
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v3
+  #     steps:
+  #       - name: Checkout code
+  #         uses: actions/checkout@v3
           
-        - name: Start minikube
-          uses: medyagh/setup-minikube@master
+  #       - name: Start minikube
+  #         uses: medyagh/setup-minikube@master
           
-        - name: Deploy to Kubernetes
-          run: |
-              kubectl apply -f File-It/FileServiceAPI/deployment.yaml
+  #       - name: Deploy to Kubernetes
+  #         run: |
+  #             kubectl apply -f File-It/FileServiceAPI/deployment.yaml
               
-        - name: Wait for Pods to be ready
-          run: |
-            until [[ $(kubectl get pods --field-selector=status.phase=Running | grep -c Running) -eq 2 ]]; do sleep 5; echo "Waiting for Pods to be ready..."; done
+  #       - name: Wait for Pods to be ready
+  #         run: |
+  #           until [[ $(kubectl get pods --field-selector=status.phase=Running | grep -c Running) -eq 2 ]]; do sleep 5; echo "Waiting for Pods to be ready..."; done
 
-        - name: Get service URL
-          run: |
-            SERVICE_URL=$(minikube service fileservice --url)
-            echo "Service URL: $SERVICE_URL"
+  #       - name: Get service URL
+  #         run: |
+  #           SERVICE_URL=$(minikube service fileservice --url)
+  #           echo "Service URL: $SERVICE_URL"
             
-        - name: Test service URLs
-          run: |
-              minikube service list
-              kubectl get pods -A
-              kubectl get svc
-        - name: Get service URL
-          run: |
-            SERVICE_URL=$(minikube service fileservice --url)
-            echo "Service URL: $SERVICE_URL"
+  #       - name: Test service URLs
+  #         run: |
+  #             minikube service list
+  #             kubectl get pods -A
+  #             kubectl get svc
+  #       - name: Get service URL
+  #         run: |
+  #           SERVICE_URL=$(minikube service fileservice --url)
+  #           echo "Service URL: $SERVICE_URL"
 
-        - name: Test service
-          run: |
-            curl $SERVICE_URL/test
-            curl $SERVICE_URL/File/All
+  #       - name: Test service
+  #         run: |
+  #           curl $SERVICE_URL/test
+  #           curl $SERVICE_URL/File/All
