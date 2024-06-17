@@ -1,0 +1,194 @@
+{
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:5000"
+  },
+  "Routes": [
+    //FILESERVICE
+    {
+      //GetAll
+      "UpstreamPathTemplate": "/File/All",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/File/All",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "fileservice",
+          "Port": 5002
+        }
+      ],
+      "SwaggerKey": "FileService"
+    },
+    {
+      //GetByID
+      "UpstreamPathTemplate": "/File/Get/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/File/Get/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "fileservice",
+          "Port": 5002
+        }
+      ],
+      "SwaggerKey": "FileService"
+    },
+    {
+      //Create File
+      "UpstreamPathTemplate": "/File/Create",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamPathTemplate": "/File/Create",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "fileservice",
+          "Port": 5002
+        }
+      ],
+      "SwaggerKey": "FileService"
+    },
+    {
+      //Update File
+      "UpstreamPathTemplate": "/File/Update",
+      "UpstreamHttpMethod": [ "Put" ],
+      "DownstreamPathTemplate": "/File/Update",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "fileservice",
+          "Port": 5002
+        }
+      ],
+      "SwaggerKey": "FileService"
+    },
+    {
+      //Delete file
+      "UpstreamPathTemplate": "/File/Delete",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "DownstreamPathTemplate": "/File/Delete",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "fileservice",
+          "Port": 5002
+        }
+      ],
+      "SwaggerKey": "FileService"
+    },
+
+    //COMMENTSERVICE
+    {
+      //CreateComment
+      "UpstreamPathTemplate": "/Comment/Create",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamPathTemplate": "/Comment/Create",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "commentservice",
+          "Port": 5004
+        }
+      ],
+      "SwaggerKey": "CommentService"
+    },
+
+
+    // USERSERVICE
+    {
+      //GetAll
+      "UpstreamPathTemplate": "/User/All",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/User/All",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7202
+        }
+      ],
+      "SwaggerKey": "UserService"
+    },
+    {
+      //GetByID
+      "UpstreamPathTemplate": "/User/Get/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/User/Get/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7202
+        }
+      ],
+      "SwaggerKey": "UserService"
+    },
+    {
+      //Create File
+      "UpstreamPathTemplate": "/User/Create",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamPathTemplate": "/User/Create",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7202
+        }
+      ],
+      "SwaggerKey": "UserService"
+    },
+    {
+      //Update File
+      "UpstreamPathTemplate": "/User/Update",
+      "UpstreamHttpMethod": [ "Put" ],
+      "DownstreamPathTemplate": "/User/Update",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7202
+        }
+      ],
+      "SwaggerKey": "UserService"
+    },
+    {
+      //Delete file
+      "UpstreamPathTemplate": "/User/Delete",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "DownstreamPathTemplate": "/User/Delete",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7202
+        }
+      ],
+      "SwaggerKey": "UserService"
+    }
+
+
+    //END
+  ],
+  "SwaggerEndPoints": [
+    {
+      "Key": "FileService",
+      "Config": [
+        {
+          "Name": "FileService API",
+          "Version": "V1",
+          "Url": "https://Localhost:7085/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "UserService",
+      "Config": [
+        {
+          "Name": "UserService API",
+          "Version": "V1",
+          "Url": "https://Localhost:7202/swagger/v1/swagger.json"
+        }
+      ]
+    }
+
+    //END
+  ]
+}

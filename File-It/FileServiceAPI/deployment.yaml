@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: fileservice
+spec:
+    selector:
+        matchLabels:
+            app: fileservice
+    replicas: 2
+    template:
+        metadata:
+            labels:
+                app: fileservice
+        spec:
+            containers:
+                - name: fileservice-api
+                  imagePullPolicy: Never
+                  image: jensdeg/fileservice
+                  resources:
+                      limits:
+                          cpu: "1000m"
+                          memory: "1024Mi"
+                      requests:
+                          cpu: "100m"
+                          memory: "256Mi"
+                  ports:
+                      - containerPort: 5002
+                  env:
+                      - name: MongoConnection
+                        valueFrom:
+                            secretKeyRef:
+                                name: mongo-secrets
+                                key: MongoConnection
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: fileservice
+spec:
+    type: LoadBalancer
+    selector:
+        app: fileservice
+    ports:
+        - port: 5002
+          targetPort: 5002

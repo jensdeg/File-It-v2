@@ -1,0 +1,120 @@
+name: FileService Pipeline
+
+on:
+  push:
+    paths:
+      - 'File-It/FileServiceAPI/**'
+  pull_request:
+    paths:
+      - 'File-It/FileServiceAPI/**'
+  workflow_dispatch: 
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        dotnet-version: [8.0.x]
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ matrix.dotnet-version }}
+
+    - name: Restore dependencies
+      run: dotnet restore File-It/FileServiceAPI/FileServiceAPI.csproj
+
+
+    # BUILDING
+    - name: Build
+      run: dotnet build --no-restore --configuration Release File-It/FileServiceAPI/FileServiceAPI.csproj
+
+    #- name: Test
+    # run: dotnet test --no-restore --verbosity normal --configuration Release File-It/FileServiceAPI/FileServiceAPI.csproj
+
+    - name: Publish
+      run: dotnet publish --no-restore --configuration Release --output ./output File-It/FileServiceAPI/FileServiceAPI.csproj
+
+      
+    # DOCKER IMAGE  
+    - name: Build Docker image
+      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/fileservice:latest -f File-It/FileServiceAPI/Dockerfile .
+
+    # DOCKER HUB
+    - name: Log in to Docker Hub
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+    - name: Push Docker image to Docker Hub
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/fileservice:latest
+
+      
+  static-analysis:
+    runs-on: ubuntu-latest
+    needs: build-and-test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          
+      - name: Install SonarScanner for .NET
+        run: dotnet tool install --global dotnet-sonarscanner
+
+      - name: Build and Analyze
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          cd File-It
+          dotnet-sonarscanner begin /k:"jensdeg_File-It" /o:"jensdeg" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+          dotnet build
+          dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+
+
+  deploy:
+      runs-on: ubuntu-latest
+      needs: build-and-test   
+  
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v3
+          
+        - name: Start minikube
+          uses: medyagh/setup-minikube@master
+          
+        - name: Deploy to Kubernetes
+          run: |
+              kubectl apply -f File-It/FileServiceAPI/deployment.yaml
+              
+        - name: Wait for Pods to be ready
+          run: |
+            until [[ $(kubectl get pods --field-selector=status.phase=Running | grep -c Running) -eq 2 ]]; do sleep 5; echo "Waiting for Pods to be ready..."; done
+
+        - name: Get service URL
+          run: |
+            SERVICE_URL=$(minikube service fileservice --url)
+            echo "Service URL: $SERVICE_URL"
+            
+        - name: Test service URLs
+          run: |
+              minikube service list
+              kubectl get pods -A
+              kubectl get svc
+        - name: Get service URL
+          run: |
+            SERVICE_URL=$(minikube service fileservice --url)
+            echo "Service URL: $SERVICE_URL"
+
+        - name: Test service
+          run: |
+            curl $SERVICE_URL/test
+            curl $SERVICE_URL/File/All
