@@ -31,6 +31,7 @@ spec:
                             secretKeyRef:
                                 name: mongo-secrets
                                 key: MongoConnection
+            automountServiceAccountToken: false
 ---
 apiVersion: v1
 kind: Service
