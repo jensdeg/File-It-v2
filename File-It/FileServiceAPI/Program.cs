@@ -2,6 +2,7 @@ using FileServiceAPI.Interfaces;
 using FileServiceAPI.Messaging;
 using FileServiceAPI.Repos;
 using Microsoft.Extensions.DependencyInjection;
+using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,8 @@ var app = builder.Build();
 
 ReceiveMessage.CreateChannel(filerepo, builder.Configuration);
 
+app.UseHttpMetrics();
+app.UseMetricServer();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -35,5 +38,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapMetrics();
 
 app.Run();

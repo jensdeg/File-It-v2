@@ -1,45 +1,57 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: fileservice
+  name: fileservice
 spec:
-    selector:
-        matchLabels:
-            app: fileservice
-    replicas: 2
-    template:
-        metadata:
-            labels:
-                app: fileservice
-        spec:
-            containers:
-                - name: fileservice-api
-                  imagePullPolicy: Never
-                  image: jensdeg/fileservice
-                  resources:
-                      limits:
-                          cpu: "1000m"
-                          memory: "1024Mi"
-                      requests:
-                          cpu: "100m"
-                          memory: "256Mi"
-                  ports:
-                      - containerPort: 5002
-                  env:
-                      - name: MongoConnection
-                        valueFrom:
-                            secretKeyRef:
-                                name: mongo-secrets
-                                key: MongoConnection
+  selector:
+    matchLabels:
+      app: fileservice
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: fileservice
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/path: '/metrics'
+        prometheus.io/port: '5002'
+    spec:
+      containers:
+        - name: fileservice-api
+          imagePullPolicy: Never
+          image: jensdeg/fileservice
+          resources:
+            limits:
+              cpu: "1000m"
+              memory: "1024Mi"
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+          ports:
+            - containerPort: 5002
+          env:
+            - name: MongoConnection
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secrets
+                  key: MongoConnection
+          readinessProbe:
+            httpGet:
+              path: /metrics
+              port: 5002
+          livenessProbe:
+            httpGet:
+              path: /metrics
+              port: 5002
 ---
 apiVersion: v1
 kind: Service
 metadata:
-    name: fileservice
+  name: fileservice
 spec:
-    type: LoadBalancer
-    selector:
-        app: fileservice
-    ports:
-        - port: 5002
-          targetPort: 5002
+  type: LoadBalancer
+  selector:
+    app: fileservice
+  ports:
+    - port: 5002
+      targetPort: 5002
