@@ -15,7 +15,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserServiceAPI", "UserServi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CommentService", "CommentService", "{64BC8D9F-03A9-4057-830B-9DC285EF3A8C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommentServiceAPI", "CommentServiceAPI\CommentServiceAPI.csproj", "{E41B755C-6B2C-4BC0-9EC2-5385B5ADF143}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommentServiceAPI", "CommentServiceAPI\CommentServiceAPI.csproj", "{E41B755C-6B2C-4BC0-9EC2-5385B5ADF143}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceDefaults", "ServiceDefaults\ServiceDefaults.csproj", "{1CD69181-E313-43FD-A431-416EC4FFDA25}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppHost", "AppHost\AppHost.csproj", "{36220E36-5FF4-4FD4-94F0-A58C37434511}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,14 @@ Global
 		{E41B755C-6B2C-4BC0-9EC2-5385B5ADF143}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E41B755C-6B2C-4BC0-9EC2-5385B5ADF143}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E41B755C-6B2C-4BC0-9EC2-5385B5ADF143}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CD69181-E313-43FD-A431-416EC4FFDA25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CD69181-E313-43FD-A431-416EC4FFDA25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CD69181-E313-43FD-A431-416EC4FFDA25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CD69181-E313-43FD-A431-416EC4FFDA25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36220E36-5FF4-4FD4-94F0-A58C37434511}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36220E36-5FF4-4FD4-94F0-A58C37434511}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36220E36-5FF4-4FD4-94F0-A58C37434511}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36220E36-5FF4-4FD4-94F0-A58C37434511}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

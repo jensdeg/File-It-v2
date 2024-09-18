@@ -4,6 +4,7 @@ using FileServiceAPI.Repos;
 using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.AddServiceDefaults();
 
 // Add services to the container.
 
@@ -19,6 +20,7 @@ builder.Services.AddScoped<IFileRepo>(provider => {
 });
 
 var app = builder.Build();
+app.MapDefaultEndpoints();
 
 //ReceiveMessage.CreateChannel(filerepo, builder.Configuration);
 
