@@ -20,7 +20,7 @@ builder.Services.AddScoped<IFileRepo>(provider => {
 
 var app = builder.Build();
 
-ReceiveMessage.CreateChannel(filerepo, builder.Configuration);
+//ReceiveMessage.CreateChannel(filerepo, builder.Configuration);
 
 
 // Configure the HTTP request pipeline.

@@ -18,8 +18,8 @@ namespace FileServiceAPI.Controllers
         public FileController(IFileRepo fileRepo, IConfiguration configuration)
         {
             _filerepo = fileRepo;
-            _sendMessage = new SendMessage();
-            _sendMessage.createChannel(configuration);
+            //_sendMessage = new SendMessage();
+            //_sendMessage.createChannel(configuration);
         }
 
         [HttpGet("All")]

@@ -18,8 +18,11 @@ var connectionString = builder.Configuration["ConnectionString"];
 builder.Services.AddDbContext<UserDBcontext>(options =>
 
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+var mockrepo = new MockRepo(10);
 
-builder.Services.AddTransient<iUserRepo, UserRepo>();
+builder.Services.AddScoped<iUserRepo>(provider => {
+    return mockrepo;
+});
 
 var app = builder.Build();
 
